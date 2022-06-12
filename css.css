@@ -9,7 +9,7 @@ header{
     width: 100%;
 }
 .header__tab{
-    display: flex;
+
     justify-content: space-between;
     align-items: center;
     
@@ -404,9 +404,16 @@ a > img{
     }
     #get{
         padding: 5px 10px;
+        width: 150px;
     }
     .header__tab{
+        max-width: 350px;
         flex-wrap: wrap;
     }
 
 }
+.outbar{
+    display: flex;
+    justify-content: space-between;
+}
+

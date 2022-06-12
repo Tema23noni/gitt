@@ -108,3 +108,6 @@ checkacc.addEventListener('click', finder)
 /// Make day and night buttons
 night.addEventListener('click', makenight)
 day.addEventListener('click', makeday);
+
+
+//burger
