@@ -15,8 +15,7 @@ let day = document.querySelector('#day')
 console.log(day)
 /// get API_1
 async function  finder(){
-    document.querySelector('.first__try').style.display = 'none';
-    document.querySelector('.disp').style.display = 'flex'
+   
     let url = `https://api.github.com/users/${inputs.value}`;
 
     fetch(url)
@@ -24,12 +23,23 @@ async function  finder(){
         if(response.ok){
             return response.json()
         }else{
-            alert('Ошибка HTTP:'+ response.status)
+            document.querySelector('main').style.display ='none'
+            document.querySelector('.first__try').style.display = 'none';
+            
         }
     })
 
     .then(data => {
-        aboutAcc(data)
+        if(data == undefined){
+            document.querySelector('main').style.display ='none'
+            document.querySelector('.first__try').style.display = 'none';
+        }else{
+            document.querySelector('.first__try').style.display = 'none';
+            document.querySelector('.disp').style.display = 'flex'
+            aboutAcc(data)
+
+        }
+
     })
 
 }
@@ -42,7 +52,7 @@ function aboutAcc(jsonsi){
     }
     console.log(jsonsi)
    function aboutuser(){
-        imgs = (jsonsi.avatar_url == "https://avatars.githubusercontent.com/u/88989900?v=4")? imgs.src = 'https://www.pngitem.com/pimgs/m/245-2457737_nerd-computer-icons-geek-nerd-icon-hd-png.png': imgs.src = `${jsonsi.avatar_url}`;
+        imgs.src =  `${jsonsi.avatar_url}`;
         names.textContent =(jsonsi.name == null)?"Name: value not found": `Name: ${jsonsi.name}`;
         login.textContent = `Login: ${jsonsi.login}`
         loc.textContent = (jsonsi.location == null)? `Location: Ibiza`: `Location: ${jsonsi.location}`;
@@ -50,7 +60,8 @@ function aboutAcc(jsonsi){
         document.querySelector('#checkacc').href = `${jsonsi.html_url}`;
     }
     function folAndRep(){
-        folowers.textContent = (jsonsi.folowers == null)? `Folowers : 0`:`Folowers : ${jsonsi.folowers}`;
+        console.log(jsonsi.folowers)
+        folowers.textContent = (jsonsi.followers == null)? `Followers : 0`:`Followers : ${jsonsi.followers}`;
         reposit.textContent = (jsonsi.public_repos == null)?`Public Repositories : 0`:`Public Repositories : ${jsonsi.public_repos}`
     }
     /// get API_2
@@ -64,8 +75,8 @@ function aboutAcc(jsonsi){
                 }else{
                     alert('Error' + leng_rp.status)
                 }
+            tabels.textContent = ''
             json.forEach(element => {
-                let fix = '';
                 let time = new Date(element.created_at)
                 time = `${time.getDay()}.${time.getMonth()}.${time.getFullYear()}`
                 let homepage =() =>{
@@ -84,15 +95,19 @@ function aboutAcc(jsonsi){
                     }
                 }
 
-                console.log(element)
-                tabels.innerHTML += `<tr class ='tabels'>
-                <td data-label="Name"><a href='${element.html_url}' class ='links'>${element.name}</a></td>
-                <td data-label="Page">${homepage()}</td>
-                <td data-label="Created">${time}</td>
-                <td data-label="Most Using">${language()}</td>
-                </tr>
-                `
+                tabels.innerHTML +=
+                    `<tr class ='tabels'>
+                    <td data-label="Name"><a href='${element.html_url}' class ='links'>${element.name}</a></td>
+                    <td data-label="Page">${homepage()}</td>
+                    <td data-label="Created">${time}</td>
+                    <td data-label="Most Using">${language()}</td>
+                    </tr>
+                    `
+                
+                
             });
+            
+            
         }
         getReposStats()
     }
@@ -102,9 +117,9 @@ function aboutAcc(jsonsi){
     aboutuser()
 }
 
+
+
 checkacc.addEventListener('click', finder)
-
-
 /// Make day and night buttons
 night.addEventListener('click', makenight)
 day.addEventListener('click', makeday);
